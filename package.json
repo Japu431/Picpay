@@ -1,12 +1,28 @@
 {
-  "name": "picpay",
+  "name": "Picpay",
   "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT",
+  "description": "",
+  "main": "app.js",
   "dependencies": {
+    "body-parser": "^1.19.0",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "mongoose": "^6.1.0",
     "nodemon": "^2.0.15"
-  }
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Japu431/Picpay.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Japu431/Picpay/issues"
+  },
+  "homepage": "https://github.com/Japu431/Picpay#readme"
 }
