@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router();
 
 const User = require('../models/Usuarios');
-
+const isValidEmail = require('../models/validateEmail')
 
 router.get('/', async (req, res) => {
     try {
@@ -16,39 +16,33 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
 
-    const { nomeCompleto, CPF, email, senha } = req.body;
+    const { nomeCompleto, CPF, senha } = req.body;
+
+    //valida CPF
+
+
+    // valida email 
+    const email = req.body.email;
+
+    const isValidEmail = (email, cb) => {
+        const reg = new RegExp(/^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/);
+        if (!reg.test(email)) {
+            // nao é um email valido, nao vale a pena perguntar se existe na DB
+            cb(('RegEx: Email nao é valido'));
+            return;
+        }
+    }
+
+    (email, (err) => {
+        if (err) {
+            res.status(401).send(err.message);
+            return;
+        }
+    });
 
     const user = {
         nomeCompleto, CPF, email, senha
     }
-
-    //valida CPF
-
-    var Soma;
-    var Resto;
-    Soma = 0;
-
-    if (user.CPF == "00000000000") 
-    return false;
-
-    for (i = 1; i <= 9; i++) Soma = Soma + parseInt(user.CPF.substring(i - 1, i)) * (11 - i);
-    Resto = (Soma * 10) % 11;
-
-    if ((Resto == 10) || (Resto == 11)) Resto = 0;
-    if (Resto != parseInt(user.CPF.substring(9, 10))) 
-    return false;
-
-    Soma = 0;
-    for (i = 1; i <= 10; i++) Soma = Soma + parseInt(user.CPF.substring(i - 1, i)) * (12 - i);
-    Resto = (Soma * 10) % 11;
-
-    if ((Resto == 10) || (Resto == 11)) Resto = 0;
-    if (Resto != parseInt(user.CPF.substring(10, 11))) 
-    return false;
-
-    // valida email 
-
-    
 
 
     try {
@@ -59,6 +53,6 @@ router.post('/', async (req, res) => {
             .json({ message: `Deu erro no sistema!! > ${error}` });
     }
 
-})
+});
 
 module.exports = router
